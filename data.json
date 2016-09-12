@@ -1,0 +1,67 @@
+{
+    "image1" : {
+        "id" : "image1",
+        "path" : "cpslab1.jpg",
+        "link" : [
+            {
+                "linkId" : "image2",
+                "theta" : 90, 
+                "phi" : -170
+            },
+            {
+                "linkId" : "image4",
+                "theta" : -90, 
+                "phi" : -90
+            }
+        ]
+    },
+    "image2" : {
+        "id" : "image2",
+        "path" : "cpslab2.jpg",
+        "link" : [
+            {
+                "linkId" : "image1",
+                "theta" : 90,
+                "phi" : -20
+            },
+            {
+                "linkId" : "image3",
+                "theta" : -90, 
+                "phi" : -90
+            }
+        ]
+    },
+    "image3" : {
+        "id" : "image3",
+        "path" : "cpslab3.jpg",
+        "link" : [
+            {
+                "linkId" : "image4",
+                "theta" : -90, 
+                "phi" : -155
+            },
+            {
+                "linkId" : "image2",
+                "theta" : 90, 
+                "phi" : -80
+            }
+        ]
+    },
+    "image4" : {
+        "id" : "image4",
+        "path" : "cpslab4.jpg",
+        "link" : [
+            {
+                "linkId" : "image3",
+                "theta" : -90, 
+                "phi" : -10
+            },
+            {
+                "linkId" : "image1",
+                "theta" : 90,
+                "phi" : -100
+            }
+        ]
+    }
+}
+
