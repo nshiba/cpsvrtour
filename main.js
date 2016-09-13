@@ -1,177 +1,235 @@
-(function(){
-  //オブジェクト格納グローバル変数
-  var mouse = { x: 0, y: 0 };
-  var width = window.innerWidth;
-  var height = window.innerHeight;
-  var scene = new THREE.Scene();
-  var sphereGeo = new THREE.SphereGeometry( 5, 60, 40 );
-  var loader = new THREE.TextureLoader();
-  var sphere;
-  var imageId = 'image1';
+'use strict';
 
-  httpObj = new XMLHttpRequest();
-  httpObj.open('get', 'data.json', true);
-  httpObj.onload = function() {
-    var data = JSON.parse(this.responseText);
-    console.log('image data -> ' + data["image1"].id);
-    main(data);
+const THREE = require('three');
+const OrbitControls = require('three-orbit-controls')(THREE);
+const data = require('./data.json');
+// オブジェクト格納グローバル変数
+const mouse = {x: 0, y: 0};
+const width = window.innerWidth;
+const height = window.innerHeight;
+const scene = new THREE.Scene();
+const sphereGeo = new THREE.SphereGeometry(10, 120, 80);
+const loader = new THREE.TextureLoader();
+let imageId = 'image1';
+const contentsIconList = [];
+
+let modalMesh = new THREE.Mesh();
+
+sphereGeo.scale(-1, 1, 1);
+const sphere = new THREE.Mesh(sphereGeo, loadSphereImage(data[imageId].path));
+imageId = data[imageId].id;
+scene.add(sphere);
+console.log('sphere position -> ' + sphere.position.x + ', ' + sphere.position.y + ', ' + sphere.position.z);
+
+// camera
+const camera = new THREE.PerspectiveCamera(75, width / height, 1, 2000);
+camera.position.set(0, 0, 0.1);
+camera.lookAt(sphere.position);
+
+// iconを作る
+const icon1Mesh = getLinkIconMesh(data[imageId].link[0]);
+const icon2Mesh = getLinkIconMesh(data[imageId].link[1]);
+scene.add(icon1Mesh);
+scene.add(icon2Mesh);
+
+// contents
+addContentsIcon(imageId);
+
+// render
+const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+renderer.setSize(width, height);
+renderer.setClearColor({color: 0x000000});
+document.getElementById('stage').appendChild(renderer.domElement);
+renderer.render(scene, camera);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+initCameraControls();
+render();
+
+// マウスが押された時
+window.onmousedown = function (ev) {
+  if (ev.target !== renderer.domElement) {
+    return;
   }
-  httpObj.send(null);
 
-  function main(data) {
-    sphereGeo.scale(-1, 1, 1);
-    sphere = new THREE.Mesh(sphereGeo, loadSphereImage(data[imageId].path));
-    imageId = data[imageId].id;
-    scene.add(sphere);
-    console.log('sphere position -> ' + sphere.position.x + ', ' + sphere.position.y + ', ' + sphere.position.z );
+  console.log('camera position -> ' + camera.position.x + ', ' + camera.position.y + ', ' + camera.position.z);
+  console.log('distanse -> ' + distanseVector3(new THREE.Vector3(0, 0, 0), camera.position));
 
-    //camera
-    var camera = new THREE.PerspectiveCamera(75, width / height, 1, 2000);
-    camera.position.set(0,0,0.1);
-    camera.lookAt(sphere.position);
+  // マウス座標2D変換
+  const rect = ev.target.getBoundingClientRect();
+  mouse.x = ev.clientX - rect.left;
+  mouse.y = ev.clientY - rect.top;
 
-    // iconを作る
-    var icon1Mesh = getLinkIconMesh(data[imageId].link[0]);
-    var icon2Mesh = getLinkIconMesh(data[imageId].link[1]);
-    scene.add(icon1Mesh);
-    scene.add(icon2Mesh);
+  // マウス座標3D変換 width（横）やheight（縦）は画面サイズ
+  mouse.x = ((mouse.x / width) * 2) - 1;
+  mouse.y = -((mouse.y / height) * 2) + 1;
 
-    //render
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(width,height);
-    renderer.setClearColor({color: 0x000000});
-    document.getElementById('stage').appendChild(renderer.domElement);
-    renderer.render(scene,camera);
+  // マウスベクトル
+  const vector = new THREE.Vector3(mouse.x, mouse.y, 1);
 
-    // OrbitControls
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
-    controls.enablePan = true;
-    controls.enableZoom = true;
-    controls.minDistance = 3.0;
-    controls.maxDistance = 10.0;
-    controls.target.set(0, 0, 0);
-    controls.maxPolarAngle = Math.PI * 1; // 0.5なら下からのぞき込めなくなる
+  // vector はスクリーン座標系なので, オブジェクトの座標系に変換
+  vector.unproject(camera);
 
-    render();
+  // 始点, 向きベクトルを渡してレイを作成
+  const ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 
-    //マウスが押された時
-    window.onmousedown = function (ev){
-      if (ev.target != renderer.domElement) {
-        return;
+  if (!controls.enabled) {
+    const modalIntersect = ray.intersectObjects([modalMesh]);
+    if (modalIntersect.length > 0) {
+      scene.remove(modalMesh);
+      controls.enabled = true;
+    }
+    return;
+  }
+
+  // クリック判定
+  const icon1 = ray.intersectObjects([icon1Mesh]);
+  const icon2 = ray.intersectObjects([icon2Mesh]);
+
+  if (icon1.length > 0) {
+    console.log('icon1:' + imageId);
+    for (let key in data) {
+      if (imageId !== key) {
+        continue;
       }
 
-      //マウス座標2D変換
-      var rect = ev.target.getBoundingClientRect();
-      mouse.x =  ev.clientX - rect.left;
-      mouse.y =  ev.clientY - rect.top;
+      trasition(0);
+      return;
+    }
+  }
 
-      //マウス座標3D変換 width（横）やheight（縦）は画面サイズ
-      mouse.x =  (mouse.x / width) * 2 - 1;
-      mouse.y = -(mouse.y / height) * 2 + 1;
-
-      // マウスベクトル
-      var vector = new THREE.Vector3( mouse.x, mouse.y ,1);
-
-      // vector はスクリーン座標系なので, オブジェクトの座標系に変換
-      vector.unproject(camera);
-
-      // 始点, 向きベクトルを渡してレイを作成
-      var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
-
-      // クリック判定
-      var icon1 = ray.intersectObjects([icon1Mesh]);
-      var icon2 = ray.intersectObjects([icon2Mesh]);
-
-      if (icon1.length > 0) {
-        console.log('icon1:' + imageId);
-        for (key in data) {
-          if (imageId != key) {
-            continue;
-          }
-
-          trasition(0);
-          return;
-        }
+  if (icon2.length > 0) {
+    console.log('icon2:' + imageId);
+    for (let key in data) {
+      if (imageId !== key) {
+        continue;
       }
 
-      if (icon2.length > 0) {
-        console.log('icon2:' + imageId);
-        for (key in data) {
-          if (imageId != key) {
-            continue;
-          }
-
-          trasition(1);
-          return;
-        }
-      }
-    };
-
-    function addContentsIcon() {
-    }
-
-    function trasition (linkIndex) {
-      var nextId = data[key].link[linkIndex].linkId;
-      console.log('theta:' + data[nextId].link[0].theta + ', phi:' + data[nextId].link[0].phi);
-      sphere.material = loadSphereImage(data[nextId].path);
-      setIconPosition(icon1Mesh, data[nextId].link[0].theta, data[nextId].link[0].phi);
-      setIconPosition(icon2Mesh, data[nextId].link[1].theta, data[nextId].link[1].phi);
-      imageId = nextId;
-    }
-
-    function render(){
-      requestAnimationFrame(render);
-      // sphere.rotation.y += 0.05 * Math.PI/180;
-      //画面リサイズ対応
-      window.addEventListener( 'resize', onWindowResize, false );
-      renderer.render(scene,camera);
-      controls.update();
-    }
-
-    function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    function loadSphereImage(path) {
-      return new THREE.MeshBasicMaterial({
-        map: loader.load(path)
-      });
-    }
-
-    function setIconPosition(target, theta, phi) {
-      theta = theta * Math.PI / 180;
-      phi = phi * Math.PI / 180;
-
-      var r = 4.8;
-      var x = r * Math.sin(theta) * Math.cos(phi);
-      var z = r * Math.sin(theta) * Math.sin(phi);
-      var y = r * Math.cos(theta);
-      target.position.set(x, y, z);
-      target.lookAt(new THREE.Vector3(0, 0, 0));
-    }
-
-    function getLinkIconMesh(link) {
-      var iconMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({map: loader.load('icon.png')}));
-      setIconPosition(iconMesh, link.theta, link.phi);
-      return iconMesh;
+      trasition(1);
+      return;
     }
   }
 
-  // imageクラス
-  var ImageEntity = function(id, path, link) {
-    this.id = id;
-    this.path = path;
-    this.link = link;
+  // contents クリック判定
+  const contensIntersect = ray.intersectObjects(contentsIconList);
+  if (contensIntersect.length > 0) {
+    console.log(contensIntersect[0].object.name);
+    openModalWindow(imageId, contensIntersect[0].object.name);
   }
+};
 
-  // linkクラス
-  var LinkEntity = function(linkId, theta, phi) {
-    this.linkId = linkId;
-    this.theta = theta;
-    this.phi = phi;
+function initCameraControls() {
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.25;
+  controls.enablePan = true;
+  controls.enableZoom = true;
+  controls.minDistance = 1.0;
+  controls.maxDistance = 20.0;
+  controls.target.set(0, 0, 0);
+  controls.maxPolarAngle = Number(Math.PI) * 1; // 0.5なら下からのぞき込めなくなる
+}
+
+function removeContentsIcon() {
+  for (let i = 0; i < contentsIconList.length; i++) {
+    const removeItem = contentsIconList[i];
+    scene.remove(removeItem);
   }
-})();
+  contentsIconList.length = 0;
+}
+
+function addContentsIcon(index) {
+  for (const i in data[index].contents) {
+    const infoMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(1, 1),
+        new THREE.MeshBasicMaterial({map: loader.load('./image/info_icon.png'), alphaTest: 0.2}));
+    infoMesh.name = i;
+    setIconPosition(infoMesh, data[index].contents[i].theta, data[index].contents[i].phi);
+    scene.add(infoMesh);
+    contentsIconList.push(infoMesh);
+  }
+}
+
+function trasition(linkIndex) {
+  const nextId = data[imageId].link[linkIndex].linkId;
+  sphere.material = loadSphereImage(data[nextId].path);
+  setIconPosition(icon1Mesh, data[nextId].link[0].theta, data[nextId].link[0].phi);
+  setIconPosition(icon2Mesh, data[nextId].link[1].theta, data[nextId].link[1].phi);
+
+  removeContentsIcon();
+  addContentsIcon(nextId);
+
+  imageId = nextId;
+}
+
+function render() {
+  requestAnimationFrame(render);
+  // sphere.rotation.y += 0.05 * Math.PI/180;
+  // 画面リサイズ対応
+  window.addEventListener('resize', onWindowResize, false);
+  renderer.render(scene, camera);
+  controls.update();
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function loadSphereImage(path) {
+  return new THREE.MeshBasicMaterial({
+    map: loader.load(path)
+  });
+}
+
+function setIconPosition(target, theta, phi) {
+  theta = theta * Math.PI / 180;
+  phi = phi * Math.PI / 180;
+
+  const r = 9.0;
+  const x = r * Math.sin(theta) * Math.cos(phi);
+  const z = r * Math.sin(theta) * Math.sin(phi);
+  const y = r * Math.cos(theta);
+  target.position.set(x, y, z);
+  target.lookAt(new THREE.Vector3(0, 0, 0));
+}
+
+function getLinkIconMesh(link) {
+  const iconMesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(2, 2),
+    new THREE.MeshBasicMaterial({
+      map: loader.load('./image/arrow_icon.png'),
+      alphaTest: 0.2})
+  );
+
+  setIconPosition(iconMesh, link.theta, link.phi);
+  return iconMesh;
+}
+
+function openModalWindow(dataIndex, contentIndex) {
+  console.log('dataIndex -> ' + dataIndex + ', contentIndex -> ' + contentIndex);
+  console.log('thumb -> ' + data[dataIndex].contents[contentIndex].thumb);
+
+  // camera control off
+  controls.enabled = false;
+
+  const height = distanseVector3(new THREE.Vector3(0, 0, 0), camera.position) * 1.5;
+  const width = height * (window.innerWidth / window.innerHeight);
+  loader.load(data[dataIndex].contents[contentIndex].thumb, function(texture) {
+    const material = new THREE.MeshBasicMaterial({
+      map: texture,
+      opacity: 0.5
+    });
+    modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
+    scene.add(modalMesh);
+    modalMesh.lookAt(camera.position);
+  });
+}
+
+function distanseVector3(v1, v2) {
+  const dx = v1.x - v2.x;
+  const dy = v1.y - v2.y;
+  const dz = v1.z - v2.z;
+
+  return Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
+}

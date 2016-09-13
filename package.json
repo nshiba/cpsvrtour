@@ -1,0 +1,35 @@
+{
+  "name": "panorama_web",
+  "version": "1.0.0",
+  "description": "VRしたい、VRしたくない？",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watchify main.js -o bundle.js -d"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpslab/CPSLabVRTour.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cpslab/CPSLabVRTour/issues"
+  },
+  "homepage": "https://github.com/cpslab/CPSLabVRTour#readme",
+  "dependencies": {
+    "three": "^0.80.1",
+    "three-orbit-controls": "^72.0.0",
+    "watchify": "^3.7.0"
+  },
+  "devDependencies": {
+    "xo": "^0.16.0"
+  },
+  "xo": {
+    "esnext": true,
+    "space": true,
+    "envs": [
+      "browser"
+    ]
+  }
+}

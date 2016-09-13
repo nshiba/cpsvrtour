@@ -1,7 +1,7 @@
 {
   "image1" : {
     "id" : "image1",
-    "path" : "cpslab1.jpg",
+    "path" : "image/cpslab1.jpg",
     "link" : [
       {
         "linkId" : "image2",
@@ -14,27 +14,33 @@
         "phi" : -90
       }
     ],
-    "contents" : [
-      {
+    "contents" : {
+      "content1" : {
         "id" : "content1",
-        "theta" : 90,
-        "phi" : -150
+        "theta" : 30,
+        "phi" : -120,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
       },
-      {
-        "id" : "content1",
-        "theta" : 90, 
-        "phi" : -150
-      },
-      {
-        "id" : "content1",
+      "content2" : {
+        "id" : "content2",
         "theta" : 90,
-        "phi" : -150
+        "phi" : -150,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      },
+      "content3" : {
+        "id" : "content3",
+        "theta" : 140,
+        "phi" : -70,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
       }
-    ]
+    }
   },
   "image2" : {
     "id" : "image2",
-    "path" : "cpslab2.jpg",
+    "path" : "image/cpslab2.jpg",
     "link" : [
       {
         "linkId" : "image1",
@@ -46,11 +52,35 @@
         "theta" : -90,
         "phi" : -90
       }
-    ]
+    ],
+    "contents" : {
+      "content4" : {
+        "id" : "content4",
+        "theta" : 50,
+        "phi" : -70,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      },
+      "content5" : {
+        "id" : "content5",
+        "theta" : 140,
+        "phi" : -100,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+
+      },
+      "content6" : {
+        "id" : "content6",
+        "theta" : 100,
+        "phi" : -700,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      }
+    }
   },
   "image3" : {
     "id" : "image3",
-    "path" : "cpslab3.jpg",
+    "path" : "image/cpslab3.jpg",
     "link" : [
       {
         "linkId" : "image4",
@@ -62,11 +92,34 @@
         "theta" : 90,
         "phi" : -80
       }
-    ]
+    ],
+    "contents" : {
+      "content7" : {
+        "id" : "content7",
+        "theta" : 90,
+        "phi" : -90,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      },
+      "content8" : {
+        "id" : "content8",
+        "theta" : 90,
+        "phi" : 90,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      },
+      "content9" : {
+        "id" : "content9",
+        "theta" : 70,
+        "phi" : -70,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      }
+    }
   },
   "image4" : {
     "id" : "image4",
-    "path" : "cpslab4.jpg",
+    "path" : "image/cpslab4.jpg",
     "link" : [
       {
         "linkId" : "image3",
@@ -78,6 +131,29 @@
         "theta" : 90,
         "phi" : -100
       }
-    ]
+    ],
+    "contents" : {
+      "content10" : {
+        "id" : "content10",
+        "theta" : 30,
+        "phi" : -100,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      },
+      "content11" : {
+        "id" : "content11",
+        "theta" : 50,
+        "phi" : -100,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      },
+      "content12" : {
+        "id" : "content12",
+        "theta" : 100,
+        "phi" : -70,
+        "thumb" : "image/thumb.jpg",
+        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+      }
+    }
   }
 }
