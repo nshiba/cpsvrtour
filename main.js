@@ -1,6 +1,7 @@
 'use strict';
 
 const THREE = require('three');
+const TWEEN = require('tween.js');
 const OrbitControls = require('three-orbit-controls')(THREE);
 const data = require('./data.json');
 // オブジェクト格納グローバル変数
@@ -25,6 +26,8 @@ console.log('sphere position -> ' + sphere.position.x + ', ' + sphere.position.y
 const camera = new THREE.PerspectiveCamera(75, width / height, 1, 2000);
 camera.position.set(0, 0, 0.1);
 camera.lookAt(sphere.position);
+
+new TWEEN.Tween({x:10}).to({x:100}, 3000).onUpdate(function(){console.log(this);}).start();
 
 // iconを作る
 const icon1Mesh = getLinkIconMesh(data[imageId].link[0]);
@@ -221,9 +224,17 @@ function openModalWindow(dataIndex, contentIndex) {
       opacity: 0.5
     });
     modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
+    // modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({color: 0x000000}));
     scene.add(modalMesh);
     modalMesh.lookAt(camera.position);
+    new TWEEN.Tween(modalMesh.position).to({x: 1, y: 1, z: 1}, 3000)
+      .onUpdate(function(){log(modalMesh);}).start();
+    log(modalMesh);
   });
+}
+
+function log(mesh) {
+  console.log('modalMesh ->  x:' + mesh.position.x + ', y: -> ' + mesh.position.y);
 }
 
 function distanseVector3(v1, v2) {
