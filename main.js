@@ -14,6 +14,11 @@ const loader = new THREE.TextureLoader();
 let imageId = 'image1';
 const contentsIconList = [];
 const scaleItems = [];
+const modalBgMesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(width, height),
+  new THREE.MeshBasicMaterial({color: 0x000000, opacity: 0.5, transparent: true})
+);
+let isWindowChanged4Modal = false;
 
 let modalMesh = new THREE.Mesh();
 
@@ -106,6 +111,7 @@ window.onmousedown = function (ev) {
     const modalIntersect = ray.intersectObjects([modalMesh]);
     if (modalIntersect.length > 0) {
       scene.remove(modalMesh);
+      scene.remove(modalBgMesh);
       controls.enabled = true;
     }
     return;
@@ -153,8 +159,8 @@ function initCameraControls() {
   controls.enableDamping = true;
   controls.dampingFactor = 0.25;
   controls.enablePan = true;
-  controls.enableZoom = true;
-  controls.minDistance = 1.0;
+  controls.enableZoom = false;
+  controls.minDistance = 3.5;
   controls.maxDistance = 20.0;
   controls.target.set(0, 0, 0);
   controls.maxPolarAngle = Number(Math.PI) * 1; // 0.5なら下からのぞき込めなくなる
@@ -209,6 +215,7 @@ function render() {
 }
 
 function onWindowResize() {
+  isWindowChanged4Modal = true;
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -234,7 +241,7 @@ function setIconPosition(target, theta, phi) {
 
 function getLinkIconMesh(link) {
   const iconMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(1, 1),
+    new THREE.PlaneGeometry(1.5, 1.5),
     new THREE.MeshBasicMaterial({
       map: loader.load('./image/arrow_icon.png'),
       alphaTest: 0.2})
@@ -247,16 +254,35 @@ function getLinkIconMesh(link) {
 function openModalWindow(dataIndex, contentIndex) {
   // camera control off
   controls.enabled = false;
+  if (isWindowChanged4Modal) {
+    isWindowChanged4Modal = false;
+    modalBgMesh.geometry = new THREE.PlaneGeometry(window.width, window.height);
+  }
+  modalBgMesh.lookAt(camera.position);
+  modalBgMesh.position.set(
+    (camera.position.x / 100) * -3,
+    (camera.position.y / 100) * -3,
+    (camera.position.z / 100) * -3
+  );
+  scene.add(modalBgMesh);
 
-  const height = (distanseVector3(new THREE.Vector3(0, 0, 0), camera.position) * 1.5);
+  const height = (distanseVector3(new THREE.Vector3(0, 0, 0), camera.position) * 1.3);
   const width = (height * (window.innerWidth / window.innerHeight));
   loader.load(data[dataIndex].contents[contentIndex].thumb, function(texture) {
-    const material = new THREE.MeshBasicMaterial({map: texture, opacity: 0.01, transparent: true});
+    // const material = new THREE.MeshBasicMaterial({map: texture, opacity: 0.01, transparent: true});
+    const material = new THREE.MeshBasicMaterial({map: texture});
     modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
+    // modalMesh.position.set(camera.position.x / 100, camera.position.y / 100, camera.position.z / 100);
+    console.log(modalMesh);
     // modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({color: 0x000000, alphaTest: 0.2}));
-    scene.add(modalMesh);
     modalMesh.lookAt(camera.position);
-    requestAnimationFrame(modalAnimation);
+    modalMesh.position.set(
+      (camera.position.x / 100) * -1,
+      (camera.position.y / 100) * -1,
+      (camera.position.z / 100) * -1
+    );
+    scene.add(modalMesh);
+    // requestAnimationFrame(modalAnimation);
   });
 }
 
