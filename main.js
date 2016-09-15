@@ -13,6 +13,7 @@ const sphereGeo = new THREE.SphereGeometry(10, 120, 80);
 const loader = new THREE.TextureLoader();
 let imageId = 'image1';
 const contentsIconList = [];
+const scaleItems = [];
 
 let modalMesh = new THREE.Mesh();
 
@@ -20,14 +21,13 @@ sphereGeo.scale(-1, 1, 1);
 const sphere = new THREE.Mesh(sphereGeo, loadSphereImage(data[imageId].path));
 imageId = data[imageId].id;
 scene.add(sphere);
-console.log('sphere position -> ' + sphere.position.x + ', ' + sphere.position.y + ', ' + sphere.position.z);
 
 // camera
 const camera = new THREE.PerspectiveCamera(75, width / height, 1, 2000);
 camera.position.set(0, 0, 0.1);
 camera.lookAt(sphere.position);
 
-new TWEEN.Tween({x:10}).to({x:100}, 3000).onUpdate(function(){console.log(this);}).start();
+requestAnimationFrame(animate);
 
 // iconを作る
 const icon1Mesh = getLinkIconMesh(data[imageId].link[0]);
@@ -49,19 +49,15 @@ const controls = new OrbitControls(camera, renderer.domElement);
 initCameraControls();
 render();
 
-// マウスが押された時
-window.onmousedown = function (ev) {
-  if (ev.target !== renderer.domElement) {
+function getMouseRay(e) {
+  if (e.target !== renderer.domElement) {
     return;
   }
 
-  console.log('camera position -> ' + camera.position.x + ', ' + camera.position.y + ', ' + camera.position.z);
-  console.log('distanse -> ' + distanseVector3(new THREE.Vector3(0, 0, 0), camera.position));
-
   // マウス座標2D変換
-  const rect = ev.target.getBoundingClientRect();
-  mouse.x = ev.clientX - rect.left;
-  mouse.y = ev.clientY - rect.top;
+  const rect = e.target.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
 
   // マウス座標3D変換 width（横）やheight（縦）は画面サイズ
   mouse.x = ((mouse.x / width) * 2) - 1;
@@ -74,7 +70,37 @@ window.onmousedown = function (ev) {
   vector.unproject(camera);
 
   // 始点, 向きベクトルを渡してレイを作成
-  const ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+  return new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+}
+
+// マウスが動いた時
+window.onmousemove = function (e) {
+  const ray = getMouseRay(e);
+
+  // 交差判定
+  const contensIntersect = ray.intersectObjects(contentsIconList);
+  const moveIntersect = ray.intersectObjects([icon1Mesh, icon2Mesh]);
+  if (contensIntersect.length > 0) {
+    const target = contensIntersect[0].object;
+    const tween = new TWEEN.Tween(target.scale);
+    tween.to({x: 1.2, y: 1.2, z: 1.2}, 50).start();
+    scaleItems.push(target);
+  } else if (moveIntersect.length > 0) {
+    const target = moveIntersect[0].object;
+    const tween = new TWEEN.Tween(target.scale);
+    tween.to({x: 1.2, y: 1.2, z: 1.2}, 30).start();
+    scaleItems.push(target);
+  } else if (scaleItems.length > 0) {
+    for (let i = 0; i < scaleItems.length; i++) {
+      const tween = new TWEEN.Tween(scaleItems[i].scale);
+      tween.to({x: 1.0, y: 1.0, z: 1.0}, 30).start();
+    }
+  }
+};
+
+// マウスが押された時
+window.onmousedown = function (ev) {
+  const ray = getMouseRay(ev);
 
   if (!controls.enabled) {
     const modalIntersect = ray.intersectObjects([modalMesh]);
@@ -90,7 +116,6 @@ window.onmousedown = function (ev) {
   const icon2 = ray.intersectObjects([icon2Mesh]);
 
   if (icon1.length > 0) {
-    console.log('icon1:' + imageId);
     for (let key in data) {
       if (imageId !== key) {
         continue;
@@ -102,7 +127,6 @@ window.onmousedown = function (ev) {
   }
 
   if (icon2.length > 0) {
-    console.log('icon2:' + imageId);
     for (let key in data) {
       if (imageId !== key) {
         continue;
@@ -116,10 +140,14 @@ window.onmousedown = function (ev) {
   // contents クリック判定
   const contensIntersect = ray.intersectObjects(contentsIconList);
   if (contensIntersect.length > 0) {
-    console.log(contensIntersect[0].object.name);
     openModalWindow(imageId, contensIntersect[0].object.name);
   }
 };
+
+function animate(time) {
+  requestAnimationFrame(animate);
+  TWEEN.update(time);
+}
 
 function initCameraControls() {
   controls.enableDamping = true;
@@ -142,13 +170,20 @@ function removeContentsIcon() {
 
 function addContentsIcon(index) {
   for (const i in data[index].contents) {
-    const infoMesh = new THREE.Mesh(
+    loader.load('./image/info_icon.png', function(texture) {
+      texture.anisotropy = 0;
+      texture.magFilter = THREE.NearestFilter;
+      texture.minFilter = THREE.NearestFilter;
+
+      const infoMesh = new THREE.Mesh(
         new THREE.PlaneGeometry(1, 1),
-        new THREE.MeshBasicMaterial({map: loader.load('./image/info_icon.png'), alphaTest: 0.2}));
-    infoMesh.name = i;
-    setIconPosition(infoMesh, data[index].contents[i].theta, data[index].contents[i].phi);
-    scene.add(infoMesh);
-    contentsIconList.push(infoMesh);
+        new THREE.MeshBasicMaterial({map: texture, alphaTest: 0.9}));
+
+      infoMesh.name = i;
+      setIconPosition(infoMesh, data[index].contents[i].theta, data[index].contents[i].phi);
+      scene.add(infoMesh);
+      contentsIconList.push(infoMesh);
+    });
   }
 }
 
@@ -189,7 +224,7 @@ function setIconPosition(target, theta, phi) {
   theta = theta * Math.PI / 180;
   phi = phi * Math.PI / 180;
 
-  const r = 9.0;
+  const r = 9.5;
   const x = r * Math.sin(theta) * Math.cos(phi);
   const z = r * Math.sin(theta) * Math.sin(phi);
   const y = r * Math.cos(theta);
@@ -199,7 +234,7 @@ function setIconPosition(target, theta, phi) {
 
 function getLinkIconMesh(link) {
   const iconMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(2, 2),
+    new THREE.PlaneGeometry(1, 1),
     new THREE.MeshBasicMaterial({
       map: loader.load('./image/arrow_icon.png'),
       alphaTest: 0.2})
@@ -210,31 +245,23 @@ function getLinkIconMesh(link) {
 }
 
 function openModalWindow(dataIndex, contentIndex) {
-  console.log('dataIndex -> ' + dataIndex + ', contentIndex -> ' + contentIndex);
-  console.log('thumb -> ' + data[dataIndex].contents[contentIndex].thumb);
-
   // camera control off
   controls.enabled = false;
 
-  const height = distanseVector3(new THREE.Vector3(0, 0, 0), camera.position) * 1.5;
-  const width = height * (window.innerWidth / window.innerHeight);
+  const height = (distanseVector3(new THREE.Vector3(0, 0, 0), camera.position) * 1.5);
+  const width = (height * (window.innerWidth / window.innerHeight));
   loader.load(data[dataIndex].contents[contentIndex].thumb, function(texture) {
-    const material = new THREE.MeshBasicMaterial({
-      map: texture,
-      opacity: 0.5
-    });
+    const material = new THREE.MeshBasicMaterial({map: texture, opacity: 0.01, transparent: true});
     modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
-    // modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({color: 0x000000}));
+    // modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({color: 0x000000, alphaTest: 0.2}));
     scene.add(modalMesh);
     modalMesh.lookAt(camera.position);
-    new TWEEN.Tween(modalMesh.position).to({x: 1, y: 1, z: 1}, 3000)
-      .onUpdate(function(){log(modalMesh);}).start();
-    log(modalMesh);
+    requestAnimationFrame(modalAnimation);
   });
 }
 
-function log(mesh) {
-  console.log('modalMesh ->  x:' + mesh.position.x + ', y: -> ' + mesh.position.y);
+function modalAnimation() {
+  new TWEEN.Tween(modalMesh.material).to({opacity: 100}, 1000).start();
 }
 
 function distanseVector3(v1, v2) {
