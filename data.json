@@ -17,24 +17,66 @@
     "contents" : {
       "content1" : {
         "id" : "content1",
-        "theta" : 30,
-        "phi" : -120,
+        "theta" : 98,
+        "phi" : -90,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "html5j"
       },
       "content2" : {
         "id" : "content2",
-        "theta" : 90,
-        "phi" : -150,
+        "theta" : 110,
+        "phi" : -120,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "下駄箱"
       },
       "content3" : {
         "id" : "content3",
-        "theta" : 140,
-        "phi" : -70,
+        "theta" : 98,
+        "phi" : -130,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "下駄箱上の本"
+      },
+      "content4" : {
+        "id" : "content4",
+        "theta" : 98,
+        "phi" : -15,
+        "thumb" : "image/thumb.jpg",
+        "description" : "岩井先生の部屋への扉"
+      },
+      "content5" : {
+        "id" : "content5",
+        "theta" : 90,
+        "phi" : 130,
+        "thumb" : "image/thumb.jpg",
+        "description" : "ボックスの棚"
+      },
+      "content6" : {
+        "id" : "content6",
+        "theta" : 118,
+        "phi" : 170,
+        "thumb" : "image/thumb.jpg",
+        "description" : "空気清浄機"
+      },
+      "content7" : {
+        "id" : "content7",
+        "theta" : 125,
+        "phi" : 185,
+        "thumb" : "image/thumb.jpg",
+        "description" : "掃除機"
+      },
+      "content8" : {
+        "id" : "content8",
+        "theta" : 90,
+        "phi" : 30,
+        "thumb" : "image/thumb.jpg",
+        "description" : "白板"
+      },
+      "content9" : {
+        "id" : "content9",
+        "theta" : 110,
+        "phi" : 85,
+        "thumb" : "image/thumb.jpg",
+        "description" : "大机"
       }
     }
   },
@@ -54,27 +96,54 @@
       }
     ],
     "contents" : {
-      "content4" : {
-        "id" : "content4",
-        "theta" : 50,
-        "phi" : -70,
+      "content9" : {
+        "id" : "content9",
+        "theta" : 105,
+        "phi" : -90,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "new 3D printer"
       },
-      "content5" : {
-        "id" : "content5",
+      "content1" : {
+        "id" : "content1",
+        "theta" : 105,
+        "phi" : -74,
+        "thumb" : "image/thumb.jpg",
+        "description" : "printer"
+      },
+      "content11" : {
+        "id" : "content2",
         "theta" : 140,
-        "phi" : -100,
+        "phi" : -170,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
-
+        "description" : "old 3D printer"
       },
-      "content6" : {
-        "id" : "content6",
-        "theta" : 100,
-        "phi" : -700,
+      "content12" : {
+        "id" : "content3",
+        "theta" : 135,
+        "phi" : -147,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "old lazer 3D printer"
+      },
+      "content13" : {
+        "id" : "content4",
+        "theta" : 110,
+        "phi" : -170,
+        "thumb" : "image/thumb.jpg",
+        "description" : "maker desk"
+      },
+      "content14" : {
+        "id" : "content5",
+        "theta" : 110,
+        "phi" : 30,
+        "thumb" : "image/thumb.jpg",
+        "description" : "秘書さん席"
+      },
+      "content15" : {
+        "id" : "content6",
+        "theta" : 125,
+        "phi" : 135,
+        "thumb" : "image/thumb.jpg",
+        "description" : "寝床1"
       }
     }
   },
@@ -94,26 +163,19 @@
       }
     ],
     "contents" : {
-      "content7" : {
-        "id" : "content7",
-        "theta" : 90,
-        "phi" : -90,
+      "content1" : {
+        "id" : "content1",
+        "theta" : 55,
+        "phi" : 100,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "物干し糸"
       },
-      "content8" : {
-        "id" : "content8",
-        "theta" : 90,
-        "phi" : 90,
+      "content2" : {
+        "id" : "content2",
+        "theta" : 100,
+        "phi" : 80,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
-      },
-      "content9" : {
-        "id" : "content9",
-        "theta" : 70,
-        "phi" : -70,
-        "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "キッチン"
       }
     }
   },
@@ -133,26 +195,54 @@
       }
     ],
     "contents" : {
-      "content10" : {
-        "id" : "content10",
-        "theta" : 30,
-        "phi" : -100,
+      "content1" : {
+        "id" : "content1",
+        "theta" : 105,
+        "phi" : 83,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "TV"
       },
-      "content11" : {
-        "id" : "content11",
-        "theta" : 50,
-        "phi" : -100,
+      "content2" : {
+        "id" : "content2",
+        "theta" : 115,
+        "phi" : -155,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "冷蔵庫"
       },
-      "content12" : {
-        "id" : "content12",
-        "theta" : 100,
-        "phi" : -70,
+      "content3" : {
+        "id" : "content3",
+        "theta" : 90,
+        "phi" : -155,
         "thumb" : "image/thumb.jpg",
-        "text" : "ダミーテキストダミーテキストダミーテキストダミーテキスト"
+        "description" : "電子レンジ"
+      },
+      "content4" : {
+        "id" : "content4",
+        "theta" : 130,
+        "phi" : 145,
+        "thumb" : "image/thumb.jpg",
+        "description" : "RFID"
+      },
+      "content5" : {
+        "id" : "content5",
+        "theta" : 110,
+        "phi" : 115,
+        "thumb" : "image/thumb.jpg",
+        "description" : "absoluteduo"
+      },
+      "content6" : {
+        "id" : "content6",
+        "theta" : 120,
+        "phi" : 0,
+        "thumb" : "image/thumb.jpg",
+        "description" : "ソファベッド"
+      },
+      "content7" : {
+        "id" : "content7",
+        "theta" : 80,
+        "phi" : -155,
+        "thumb" : "image/thumb.jpg",
+        "description" : "オーブン"
       }
     }
   }
