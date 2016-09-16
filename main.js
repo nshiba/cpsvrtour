@@ -175,7 +175,7 @@ function removeContentsIcon() {
 }
 
 function addContentsIcon(index) {
-  for (const i in data[index].contents) {
+  for (let i in data[index].contents) {
     loader.load('./image/info_icon.png', function(texture) {
       texture.anisotropy = 0;
       texture.magFilter = THREE.NearestFilter;
@@ -269,12 +269,9 @@ function openModalWindow(dataIndex, contentIndex) {
   const height = (distanseVector3(new THREE.Vector3(0, 0, 0), camera.position) * 1.3);
   const width = (height * (window.innerWidth / window.innerHeight));
   loader.load(data[dataIndex].contents[contentIndex].thumb, function(texture) {
-    // const material = new THREE.MeshBasicMaterial({map: texture, opacity: 0.01, transparent: true});
-    const material = new THREE.MeshBasicMaterial({map: texture});
+    const material = new THREE.MeshBasicMaterial({map: texture, opacity: 0.1, transparent: true});
     modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
-    // modalMesh.position.set(camera.position.x / 100, camera.position.y / 100, camera.position.z / 100);
     console.log(modalMesh);
-    // modalMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({color: 0x000000, alphaTest: 0.2}));
     modalMesh.lookAt(camera.position);
     modalMesh.position.set(
       (camera.position.x / 100) * -1,
@@ -282,12 +279,12 @@ function openModalWindow(dataIndex, contentIndex) {
       (camera.position.z / 100) * -1
     );
     scene.add(modalMesh);
-    // requestAnimationFrame(modalAnimation);
+    requestAnimationFrame(modalAnimation);
   });
 }
 
 function modalAnimation() {
-  new TWEEN.Tween(modalMesh.material).to({opacity: 100}, 1000).start();
+  new TWEEN.Tween(modalMesh.material).to({opacity: 100}, 15000).start();
 }
 
 function distanseVector3(v1, v2) {
