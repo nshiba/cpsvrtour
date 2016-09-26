@@ -1,7 +1,7 @@
 {
   "image1" : {
     "id" : "image1",
-    "path" : "image/cpslab1.JPG",
+    "path" : "image/cpslab1.jpg",
     "link" : [
       {
         "linkId" : "image2",
@@ -47,7 +47,7 @@
   },
   "image2" : {
     "id" : "image2",
-    "path" : "image/cpslab2.JPG",
+    "path" : "image/cpslab2.jpg",
     "link" : [
       {
         "linkId" : "image1",
@@ -121,7 +121,7 @@
   },
   "image3" : {
     "id" : "image3",
-    "path" : "image/cpslab3.JPG",
+    "path" : "image/cpslab3.jpg",
     "link" : [
       {
         "linkId" : "image4",
@@ -146,7 +146,7 @@
   },
   "image4" : {
     "id" : "image4",
-    "path" : "image/cpslab4.JPG",
+    "path" : "image/cpslab4.jpg",
     "link" : [
       {
         "linkId" : "image3",
