@@ -1,52 +1,38 @@
 {
   "image1" : {
     "id" : "image1",
-    "path" : "image/cpslab1.jpg",
+    "path" : "image/cpslab1.JPG",
     "link" : [
       {
         "linkId" : "image2",
         "theta" : 90,
-        "phi" : -170
+        "phi" : 160
       },
       {
         "linkId" : "image4",
-        "theta" : -90,
-        "phi" : -90
+        "theta" : -80,
+        "phi" : -100
       }
     ],
     "contents" : {
       "content1" : {
         "id" : "content1",
-        "theta" : 98,
+        "theta" : 85,
         "phi" : -90,
         "thumb" : "image/thumb.png",
         "description" : "html5j"
       },
-      "content3" : {
-        "id" : "content3",
-        "theta" : 98,
-        "phi" : -130,
-        "thumb" : "image/books.png",
-        "description" : "おすすめの本棚"
-      },
       "content4" : {
         "id" : "content4",
-        "theta" : 98,
-        "phi" : -15,
+        "theta" : 100,
+        "phi" : 0,
         "thumb" : "image/door.png",
         "description" : "岩井先生の部屋への扉"
       },
-      "content5" : {
-        "id" : "content5",
-        "theta" : 90,
-        "phi" : 130,
-        "thumb" : "image/box_shelf.png",
-        "description" : "ボックスの棚"
-      },
       "content6" : {
         "id" : "content6",
-        "theta" : 118,
-        "phi" : 170,
+        "theta" : 115,
+        "phi" : 135,
         "thumb" : "image/air_cleaner.png",
         "description" : "空気清浄機"
       },
@@ -61,12 +47,12 @@
   },
   "image2" : {
     "id" : "image2",
-    "path" : "image/cpslab2.jpg",
+    "path" : "image/cpslab2.JPG",
     "link" : [
       {
         "linkId" : "image1",
         "theta" : 90,
-        "phi" : -20
+        "phi" : -10
       },
       {
         "linkId" : "image3",
@@ -75,45 +61,52 @@
       }
     ],
     "contents" : {
+      "content5" : {
+        "id" : "content5",
+        "theta" : 80,
+        "phi" : -50,
+        "thumb" : "image/box_shelf.png",
+        "description" : "ボックスの棚"
+      },
       "content9" : {
         "id" : "content9",
-        "theta" : 105,
-        "phi" : -90,
+        "theta" : 100,
+        "phi" : -95,
         "thumb" : "image/thumb.png",
         "description" : "new 3D printer"
       },
       "content1" : {
         "id" : "content1",
-        "theta" : 105,
-        "phi" : -74,
+        "theta" : 100,
+        "phi" : -75,
         "thumb" : "image/thumb.png",
         "description" : "printer"
       },
       "content11" : {
         "id" : "content2",
-        "theta" : 140,
-        "phi" : -170,
+        "theta" : 130,
+        "phi" : 175,
         "thumb" : "image/thumb.png",
         "description" : "old 3D printer"
       },
       "content12" : {
         "id" : "content3",
-        "theta" : 135,
-        "phi" : -147,
+        "theta" : 130,
+        "phi" : -165,
         "thumb" : "image/thumb.png",
         "description" : "old lazer 3D printer"
       },
       "content13" : {
         "id" : "content4",
         "theta" : 110,
-        "phi" : -170,
+        "phi" : 170,
         "thumb" : "image/thumb.png",
         "description" : "maker desk"
       },
       "content14" : {
         "id" : "content5",
-        "theta" : 110,
-        "phi" : 30,
+        "theta" : 100,
+        "phi" : 55,
         "thumb" : "image/thumb.png",
         "description" : "秘書さん席"
       },
@@ -128,12 +121,12 @@
   },
   "image3" : {
     "id" : "image3",
-    "path" : "image/cpslab3.jpg",
+    "path" : "image/cpslab3.JPG",
     "link" : [
       {
         "linkId" : "image4",
-        "theta" : -90,
-        "phi" : -155
+        "theta" : -75,
+        "phi" : -180
       },
       {
         "linkId" : "image2",
@@ -144,28 +137,21 @@
     "contents" : {
       "content1" : {
         "id" : "content1",
-        "theta" : 55,
+        "theta" : 40,
         "phi" : 100,
         "thumb" : "image/thumb.png",
         "description" : "物干し糸"
-      },
-      "content2" : {
-        "id" : "content2",
-        "theta" : 100,
-        "phi" : 80,
-        "thumb" : "image/kitchen.png",
-        "description" : "キッチン"
       }
     }
   },
   "image4" : {
     "id" : "image4",
-    "path" : "image/cpslab4.jpg",
+    "path" : "image/cpslab4.JPG",
     "link" : [
       {
         "linkId" : "image3",
-        "theta" : -90,
-        "phi" : -10
+        "theta" : -75,
+        "phi" : -20
       },
       {
         "linkId" : "image1",
@@ -176,38 +162,31 @@
     "contents" : {
       "content1" : {
         "id" : "content1",
-        "theta" : 105,
-        "phi" : 83,
+        "theta" : 100,
+        "phi" : -170,
         "thumb" : "image/thumb.png",
         "description" : "TV"
       },
       "content2" : {
         "id" : "content2",
-        "theta" : 115,
-        "phi" : -155,
+        "theta" : 105,
+        "phi" : 110,
         "thumb" : "image/thumb.png",
         "description" : "冷蔵庫"
       },
       "content3" : {
         "id" : "content3",
-        "theta" : 90,
-        "phi" : -155,
+        "theta" : 83,
+        "phi" : 110,
         "thumb" : "image/thumb.png",
         "description" : "電子レンジ"
       },
-      "content4" : {
-        "id" : "content4",
-        "theta" : 130,
-        "phi" : 145,
+      "content7" : {
+        "id" : "content7",
+        "theta" : 73,
+        "phi" : 110,
         "thumb" : "image/thumb.png",
-        "description" : "RFID"
-      },
-      "content5" : {
-        "id" : "content5",
-        "theta" : 110,
-        "phi" : 115,
-        "thumb" : "image/thumb.png",
-        "description" : "absoluteduo"
+        "description" : "オーブン"
       },
       "content6" : {
         "id" : "content6",
@@ -216,12 +195,12 @@
         "thumb" : "image/thumb.png",
         "description" : "ソファベッド"
       },
-      "content7" : {
-        "id" : "content7",
-        "theta" : 80,
-        "phi" : -155,
-        "thumb" : "image/thumb.png",
-        "description" : "オーブン"
+      "content8" : {
+        "id" : "content8",
+        "theta" : 100,
+        "phi" : 60,
+        "thumb" : "image/kitchen.png",
+        "description" : "キッチン"
       }
     }
   }
